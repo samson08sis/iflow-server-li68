@@ -6,11 +6,13 @@
     "type": "git",
     "url": "iflow-server-li68"
   },
-  "license": "ISC",
-  "author": "samson",
   "type": "commonjs",
   "main": "api/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  },
+  "keywords": [],
+  "author": "Samson",
+  "license": "ISC",
+  "packageManager": "pnpm@10.6.2"
 }
