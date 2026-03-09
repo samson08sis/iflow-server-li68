@@ -16,10 +16,10 @@ app.get("/", (req, res) => {
 });
 
 // // Deployment
-module.exports = serverless(app);
+// module.exports = serverless(app);
 
 // // Development
-// app.listen(port, () => {
-//   `Server started on port ${port}!`;
-//   console.log(`Server started on port ${port}`);
-// });
+app.listen(port, () => {
+  `Server started on port ${port}!`;
+  console.log(`Server started on port ${port}`);
+});
