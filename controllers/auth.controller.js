@@ -1,10 +1,12 @@
 const User = require("../models/User");
 const { generateOtp } = require("../services/otp.service");
 const { AppError, handleError } = require("../utils/errorHandler");
+const { formatPhoneNumber } = require("../utils/numberFormatter");
 
 const sendOtp = async (req, res) => {
   try {
-    const { phoneNumber } = req.body;
+    let { phoneNumber } = req.body;
+    phoneNumber = formatPhoneNumber(phoneNumber);
 
     if (!phoneNumber) throw new AppError("Phone number is required", 400);
 
@@ -32,7 +34,9 @@ const sendOtp = async (req, res) => {
 
 async function verifyOtp(req, res) {
   try {
-    const { phoneNumber, otp } = req.body;
+    let { phoneNumber, otp } = req.body;
+    phoneNumber = formatPhoneNumber(phoneNumber);
+
     if (!phoneNumber || !otp) {
       throw new AppError("Phone number and OTP code are required", 400);
     }
