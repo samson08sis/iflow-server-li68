@@ -7,10 +7,10 @@
     "url": "iflow-server-li68"
   },
   "type": "commonjs",
-  "main": "server.js",
+  "main": "api/server.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "node server",
+    "start": "node api/server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
