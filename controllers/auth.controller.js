@@ -68,7 +68,8 @@ async function verifyOtp(req, res) {
       throw new AppError("Invalid OTP", 400);
     }
 
-    // Success: reset OTP, mark verified, update last login
+    // Success: reset OTP, mark verified, update last login, check if new user
+    const isNewUser = !user.isVerified;
     user.isVerified = true;
     user.lastLogin = new Date();
     user.otp = { code: null, expiresAt: null, attempts: 0 };
@@ -78,6 +79,7 @@ async function verifyOtp(req, res) {
     res.status(200).json({
       success: true,
       message: "OTP verified successfully",
+      loginType: isNewUser ? "signup" : "login",
       user: {
         phoneNumber: user.phoneNumber,
         profile: user.profile,
