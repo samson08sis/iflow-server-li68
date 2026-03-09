@@ -6,6 +6,7 @@ const routes = require("../routes");
 const port = process.env.PORT || 7002;
 
 const app = express();
+app.use(express.json());
 
 // Connect DB
 (async () => {
