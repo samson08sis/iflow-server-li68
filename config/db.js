@@ -15,6 +15,18 @@ async function connectDB() {
     const MONGODB_URI = process.env.MONGODB_URI;
 
     cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose);
+
+    mongoose.connection.on("connected", () => {
+      console.log("Mongoose connected");
+    });
+
+    mongoose.connection.on("error", (err) => {
+      console.error("Mongoose connection error:", err);
+    });
+
+    mongoose.connection.on("disconnected", () => {
+      console.log("Mongoose disconnected");
+    });
   }
 
   cached.conn = await cached.promise;
