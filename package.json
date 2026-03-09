@@ -1,0 +1,16 @@
+{
+  "name": "iflow-server",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "iflow-server-li68"
+  },
+  "license": "ISC",
+  "author": "samson",
+  "type": "commonjs",
+  "main": "api/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
