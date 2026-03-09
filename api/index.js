@@ -5,8 +5,8 @@ const port = process.env.PORT || 7002;
 
 const app = express();
 
-app.get("/test", (req, res) => {
-  res.json({ message: "ok" });
+app.get("/", (req, res) => {
+  res.json({ status: "ok", message: "Welcome to iFlow!" });
 });
 
 // Deployment
