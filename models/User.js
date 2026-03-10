@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    refreshTokens: [String],
     profile: {
       name: String,
       email: String,
