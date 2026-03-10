@@ -1,5 +1,9 @@
 const User = require("../models/User");
 const { generateOtp } = require("../services/otp.service");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../services/token.service");
 const { AppError, handleError } = require("../utils/errorHandler");
 const { formatPhoneNumber } = require("../utils/numberFormatter");
 
@@ -74,12 +78,17 @@ async function verifyOtp(req, res) {
     user.lastLogin = new Date();
     user.otp = { code: null, expiresAt: null, attempts: 0 };
 
+    const token = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+
     await user.save();
 
     res.status(200).json({
       success: true,
       message: "OTP verified successfully",
       loginType: isNewUser ? "signup" : "login",
+      token,
+      refreshToken,
       user: {
         phoneNumber: user.phoneNumber,
         profile: user.profile,
