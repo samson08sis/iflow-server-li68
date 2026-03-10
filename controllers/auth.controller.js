@@ -30,6 +30,7 @@ const sendOtp = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "OTP sent successfully",
+      loginType: user.isVerified ? "login" : "signup",
     });
   } catch (error) {
     handleError(res, error);
