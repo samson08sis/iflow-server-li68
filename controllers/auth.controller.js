@@ -31,6 +31,7 @@ const sendOtp = async (req, res) => {
       success: true,
       message: "OTP sent successfully",
       loginType: user.isVerified ? "login" : "signup",
+      otpExpiry: user.otp.expiresAt.toISOString(), // UTC
     });
   } catch (error) {
     handleError(res, error);
