@@ -130,6 +130,30 @@ async function logout(req, res) {
   }
 }
 
-// LATER: Add Terminate Other Sessions functionality
+// Log out of other devices
+async function destroyOtherSessions(req, res) {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) throw new AppError("Refresh token is required", 400);
 
-module.exports = { sendOtp, verifyOtp, logout };
+    // Find user who owns this refresh token
+    const user = await User.findOne({ refreshTokens: refreshToken });
+    if (!user) throw new AppError("Invalid session", 401);
+
+    // Keep only the current refresh token, drop all others
+    user.refreshTokens = user.refreshTokens.filter(
+      (token) => token === refreshToken
+    );
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Logged out of all other devices successfully. Current session preserved.",
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
+module.exports = { sendOtp, verifyOtp, logout, destroyOtherSessions };
