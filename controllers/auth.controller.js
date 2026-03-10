@@ -106,4 +106,30 @@ async function verifyOtp(req, res) {
   }
 }
 
-module.exports = { sendOtp, verifyOtp };
+async function logout(req, res) {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) throw new AppError("Refresh token is required", 400);
+
+    // Verify user by refresh token
+    const user = await User.findOne({ refreshTokens: refreshToken });
+    if (!user) throw new AppError("Invalid session or already logged out", 401);
+
+    // Remove the refresh token from active sessions
+    user.refreshTokens = user.refreshTokens.filter(
+      (token) => token !== refreshToken
+    );
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully. Session destroyed.",
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
+// LATER: Add Terminate Other Sessions functionality
+
+module.exports = { sendOtp, verifyOtp, logout };
