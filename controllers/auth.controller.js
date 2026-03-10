@@ -81,6 +81,12 @@ async function verifyOtp(req, res) {
     const token = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
+    // Limit session limit (max 3)
+    user.refreshTokens.push(refreshToken);
+    if (user.refreshTokens.length > 3) {
+      user.refreshTokens.shift();
+    }
+
     await user.save();
 
     res.status(200).json({
