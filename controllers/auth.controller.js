@@ -15,8 +15,11 @@ const sendOtp = async (req, res) => {
     if (!phoneNumber) throw new AppError("Phone number is required", 400);
 
     let user = await User.findOne({ phoneNumber });
+    let isNewUser;
+
     if (!user) {
       user = new User({ phoneNumber });
+      isNewUser = true;
     }
 
     const { code, expiresAt } = generateOtp();
@@ -25,12 +28,14 @@ const sendOtp = async (req, res) => {
     await user.save();
 
     // LATER: Integrate SMS provider here...
-    console.log(`OTP for ${phoneNumber}: ${code}`);
+    console.log(
+      `OTP for ${phoneNumber}: ${code} | Time: ${new Date().toTimeString()}`
+    );
 
     res.status(200).json({
       success: true,
       message: "OTP sent successfully",
-      loginType: user.isVerified ? "login" : "signup",
+      loginType: isNewUser ? "signup" : "login",
       otpExpiry: user.otp.expiresAt.toISOString(), // UTC
     });
   } catch (error) {
