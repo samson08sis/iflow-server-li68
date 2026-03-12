@@ -129,8 +129,10 @@ async function verifyOtp(req, res) {
 
 async function logout(req, res) {
   try {
-    const { refreshToken } = req.body;
+    let { refreshToken } = req.body;
+
     if (!refreshToken) throw new AppError("Refresh token is required", 400);
+    refreshToken = formatString(refreshToken);
 
     // Verify user by refresh token
     const user = await User.findOne({ refreshTokens: refreshToken });
@@ -154,8 +156,10 @@ async function logout(req, res) {
 // Log out of other devices
 async function destroyOtherSessions(req, res) {
   try {
-    const { refreshToken } = req.body;
+    let { refreshToken } = req.body;
+
     if (!refreshToken) throw new AppError("Refresh token is required", 400);
+    refreshToken = formatString(refreshToken);
 
     // Find user who owns this refresh token
     const user = await User.findOne({ refreshTokens: refreshToken });
@@ -169,8 +173,7 @@ async function destroyOtherSessions(req, res) {
 
     res.status(200).json({
       success: true,
-      message:
-        "Logged out of all other devices successfully. Current session preserved.",
+      message: "Logged out of all other devices successfully.",
     });
   } catch (error) {
     handleError(res, error);
