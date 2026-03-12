@@ -56,17 +56,18 @@ const sendOtp = async (req, res) => {
 async function verifyOtp(req, res) {
   try {
     let { phoneNumber, otp } = req.body;
-    phoneNumber = formatPhoneNumber(phoneNumber);
 
     if (!phoneNumber || !otp) {
-      throw new AppError("Phone number and OTP code are required", 400);
+      throw new AppError("Phone Number & OTP are required", 400);
     }
 
-    const user = await User.findOne({ phoneNumber });
-    if (!user) throw new AppError("User not found", 404);
+    phoneNumber = formatPhoneNumber(phoneNumber);
+    otp = formatString(otp);
 
-    if (!user.otp || !user.otp.code) {
-      throw new AppError("No OTP generated for this user", 400);
+    const user = await User.findOne({ phoneNumber });
+
+    if (!user || !user.otp || !user.otp.code) {
+      if (!user) throw new AppError("User not found", 404);
     }
 
     // Check expiry
@@ -114,7 +115,7 @@ async function verifyOtp(req, res) {
       user: {
         phoneNumber: user.phoneNumber,
         profile: user.profile,
-        lastLogin: user.lastLogin,
+        role: user.role,
       },
     });
   } catch (error) {
