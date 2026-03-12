@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["driver" | "station_operator"],
+      enum: ["driver", "station_operator"],
       default: "driver",
     },
     lastLogin: Date,
