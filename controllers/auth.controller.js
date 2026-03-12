@@ -5,7 +5,7 @@ const {
   generateRefreshToken,
 } = require("../services/token.service");
 const { AppError, handleError } = require("../utils/errorHandler");
-const { formatPhoneNumber } = require("../utils/stringFormatter");
+const { formatPhoneNumber, formatString } = require("../utils/stringFormatter");
 
 const sendOtp = async (req, res) => {
   try {
@@ -28,6 +28,7 @@ const sendOtp = async (req, res) => {
         });
       }
 
+      name = formatString(name);
       user = new User({ phoneNumber, profile: { name } });
     }
 
