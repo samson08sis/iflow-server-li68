@@ -12,4 +12,8 @@ function formatPhoneNumber(input) {
   return cleaned.trim();
 }
 
-module.exports = { formatPhoneNumber };
+function formatString(input) {
+  return input.trim();
+}
+
+module.exports = { formatPhoneNumber, formatString };
