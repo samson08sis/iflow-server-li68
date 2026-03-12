@@ -9,7 +9,7 @@ const { formatPhoneNumber } = require("../utils/numberFormatter");
 
 const sendOtp = async (req, res) => {
   try {
-    let { phoneNumber } = req.body;
+    let { phoneNumber, name } = req.body;
     phoneNumber = formatPhoneNumber(phoneNumber);
 
     if (!phoneNumber) throw new AppError("Phone number is required", 400);
@@ -18,8 +18,17 @@ const sendOtp = async (req, res) => {
     let isNewUser;
 
     if (!user) {
-      user = new User({ phoneNumber });
       isNewUser = true;
+      if (!name) {
+        return res.status(200).json({
+          success: false,
+          message:
+            "No Account found with the number you entered. Please provide Full Name to sign up.",
+          loginType: "signup",
+        });
+      }
+
+      user = new User({ phoneNumber, profile: { name } });
     }
 
     const { code, expiresAt } = generateOtp();
