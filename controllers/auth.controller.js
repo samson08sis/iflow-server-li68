@@ -66,8 +66,12 @@ async function verifyOtp(req, res) {
 
     const user = await User.findOne({ phoneNumber });
 
-    if (!user || !user.otp || !user.otp.code) {
-      if (!user) throw new AppError("User not found", 404);
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+
+    if (!user.otp || !user.otp.code) {
+      throw new AppError("User not found", 400);
     }
 
     // Check expiry
