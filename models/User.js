@@ -26,6 +26,11 @@ const userSchema = new mongoose.Schema(
       email: String,
       avatar: String,
     },
+    role: {
+      type: String,
+      enum: ["driver" | "station_operator"],
+      default: "driver",
+    },
     lastLogin: Date,
   },
   {
