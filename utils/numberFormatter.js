@@ -1,13 +1,15 @@
 function formatPhoneNumber(input) {
   if (!input || typeof input !== "string") return null;
 
-  // Remove spaces, dashes, parentheses
-  let cleaned = input.replace(/[\s\-()]/g, "");
+  let cleaned = input.replace(/[\s\u00A0\-()]/g, "");
 
-  // Only digits and optional leading '+'
-  cleaned = cleaned.replace(/[^\d+]/g, "");
+  if (cleaned.startsWith("+")) {
+    cleaned = "+" + cleaned.slice(1).replace(/\D/g, "");
+  } else {
+    cleaned = cleaned.replace(/\D/g, "");
+  }
 
-  return cleaned;
+  return cleaned.trim();
 }
 
 module.exports = { formatPhoneNumber };
