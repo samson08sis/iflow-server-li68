@@ -79,7 +79,7 @@ exports.setSelectedVehicle = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!req.user.vehicles.includes(id)) {
+    if (!req.user.vehicles.map((v) => v.toString()).includes(id)) {
       return res
         .status(400)
         .json({ success: false, message: "Vehicle not owned by user" });
