@@ -19,4 +19,4 @@ const vehicleSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-modult.exports = mongoose.model("Vehicle", vehicleSchema);
+module.exports = mongoose.model("Vehicle", vehicleSchema);
