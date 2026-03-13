@@ -180,4 +180,34 @@ async function destroyOtherSessions(req, res) {
   }
 }
 
-module.exports = { sendOtp, verifyOtp, logout, destroyOtherSessions };
+// Refresh Access Token
+async function refreshToken(req, res) {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) throw new AppError("Refresh token is required", 400);
+
+    const payload = verifyRefreshToken(refreshToken);
+    if (!payload) throw new AppError("Invalid or expired refresh token", 401);
+
+    // Find user to ensure they still exist and are active
+    const user = await User.findById(payload.id);
+    if (!user) throw new AppError("User not found", 404);
+
+    const newAccessToken = generateAccessToken(user);
+
+    res.status(200).json({
+      success: true,
+      token: newAccessToken,
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
+module.exports = {
+  sendOtp,
+  verifyOtp,
+  logout,
+  destroyOtherSessions,
+  refreshToken,
+};
