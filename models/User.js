@@ -31,6 +31,8 @@ const userSchema = new mongoose.Schema(
       enum: ["driver", "station_operator"],
       default: "driver",
     },
+    vehicles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" }],
+    selectedVehicle: { type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" },
     lastLogin: Date,
   },
   {
