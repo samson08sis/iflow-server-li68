@@ -39,7 +39,7 @@ const sendOtp = async (req, res) => {
 
     // LATER: Integrate SMS provider here...
     console.log(
-      `OTP for ${phoneNumber}: ${code} | Time: ${new Date().toTimeString()}`
+      `OTP for ${phoneNumber}: ${code} | Time: ${new Date().toLocaleTimeString()}`
     );
 
     res.status(200).json({
